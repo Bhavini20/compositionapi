@@ -101,12 +101,18 @@
 
         </div>
 
+        <!-- 10. Components -->
+        <child-component :message="parentMessage" @message-sent="handleMessage"></child-component>
+        <p>{{ receivedMessage }}</p>
+
 
     </div>
 </template>
   
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
+
+import ChildComponent from './ChildComponent.vue';
 
 
 const pageTitle = 'Tennis Coaching';
@@ -114,6 +120,8 @@ const coachName = 'Aditya Pratap';
 const coachingDescription = 'Learn to play tennis like a pro!';
 const scheduleButtonId = 'schedule-button';
 const scheduleTime = '10:00 AM';
+const parentMessage = 'Hello from parent!'
+   
 
 // 3. isAppointmentVisible is a reactive property, <script setup> has been used to define component logic
 const isAppointmentVisible = ref(false);
@@ -149,6 +157,11 @@ const appointments = {
 // 6b. List Rendering with a Range
 const numberRange = ref(Array.from({ length: 5 }, (_, index) => index + 1));
 
+// 9. Watcher for the name input field
+watch(name, (newName, oldName) => {
+    console.log(`Name changed from ${oldName} to ${newName}`);
+    alert(`Name changed from "${oldName}" to "${newName}"`);
+});
 
 // Method to Handle Form Submission, logging it to the console for now
 function scheduleAppointment() {
@@ -158,6 +171,10 @@ function scheduleAppointment() {
     console.log('Age Group:', ageGroup.value);
     console.log('Selected Appointment Time:', selectedAppointmentTime.value);
 }
+
+function handleMessage(message) {
+      this.receivedMessage = message;
+    }
 
 
 </script>
